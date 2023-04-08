@@ -1,0 +1,48 @@
+Sub ColorCellsByKeywords()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim keywords As Variant
+    Dim colors As Variant
+    Dim i As Long
+    Dim pos As Long
+
+    ' Define the keywords and corresponding colors
+    keywords = Array("mCherry", "Apple", "405", "Hoechst", "DAPI", "591", "FarRed", "red", _
+                     "green", "DioC6", "TMRM", "TMRE", "DeepRed", "GFP", "BFP", "scarlet", "555", _
+                     "647", "488", "halo", "635", "549", "554", "cherry", "mCh", "Emerald", "mEm", _
+                     "Alexa488", "Atto635", "TagBFP", "CFP", "cerulean", "EGFP", "Neon", "NeonGreen", _
+                     "StayGold", "COS7", "Cos7", "C7")
+    colors = Array(RGB(255, 0, 0), RGB(255, 0, 0), RGB(0, 0, 255), RGB(0, 0, 255), RGB(0, 0, 255), _
+                   RGB(128, 0, 0), RGB(255, 0, 255), RGB(255, 0, 0), RGB(80, 200, 80), RGB(80, 200, 80), _
+                   RGB(255, 0, 0), RGB(255, 0, 0), RGB(255, 0, 255), RGB(80, 200, 80), RGB(0, 0, 255), _
+                   RGB(255, 0, 0), RGB(255, 0, 0), RGB(255, 0, 255), RGB(80, 200, 80), RGB(255, 0, 255), _
+                   RGB(255, 0, 255), RGB(255, 0, 0), RGB(255, 0, 0), RGB(255, 0, 0), RGB(255, 0, 0), _
+                   RGB(0, 255, 0), RGB(0, 255, 0), RGB(0, 255, 0), RGB(255, 0, 255), RGB(0, 0, 255), _
+                   RGB(0, 255, 255), RGB(0, 255, 255), RGB(0, 255, 0), RGB(0, 255, 0), RGB(0, 255, 0), _
+                   RGB(0, 255, 0), RGB(25, 25, 25), RGB(25, 25, 25), RGB(25, 25, 25))
+
+    ' Loop through each worksheet in the workbook
+    For Each ws In ThisWorkbook.Worksheets
+        ' Set the range to search within
+        Set rng = ws.UsedRange
+
+        ' Loop through each cell in the range
+        For Each cell In rng
+            ' Loop through each keyword
+            For i = 0 To UBound(keywords)
+                ' Find the position of the keyword in the cell value
+                pos = InStr(1, cell.Value, keywords(i))
+
+                ' If the cell contains the keyword, change the font color of the keyword and make it bold
+                If pos > 0 Then
+                    With cell.Characters(pos, Len(keywords(i))).Font
+                        .Color = colors(i)
+                        .Bold = True
+                    End With
+                End If
+            Next i
+        Next cell
+    Next ws
+End Sub
+
